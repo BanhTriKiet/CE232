@@ -16,9 +16,6 @@
 
 static const char *TAG = "Lab1";
 
-/* Use project configuration menu (idf.py menuconfig) to choose the GPIO to blink,
-   or you can edit the following line and set a number here.
-*/
 #define BLINK_GPIO 5
 
 static uint8_t s_led_state = 0;
@@ -28,7 +25,6 @@ static void configure_led(void)
     gpio_reset_pin(BLINK_GPIO);
     gpio_set_direction(BLINK_GPIO, GPIO_MODE_OUTPUT);
 }
-
 static void blink_led()
 {
     gpio_set_level(BLINK_GPIO, s_led_state);
@@ -36,17 +32,12 @@ static void blink_led()
 
 void app_main(void)
 {
-
-    /* Configure the peripheral according to the LED type */
     configure_led();
-
     while (1)
     {
         ESP_LOGI(TAG, "Turning the LED %s!", s_led_state == true ? "ON" : "OFF");
         blink_led();
-        /* Toggle the LED state */
         s_led_state = !s_led_state;
-        // vTaskDelay(CONFIG_BLINK_PERIOD / portTICK_PERIOD_MS);
         vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
 }
